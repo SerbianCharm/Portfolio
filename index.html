@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boris | Ethical Hacker & Programmer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">Boris</div>
+        <ul>
+            <li><a href="#about" id="navAbout">About</a></li>
+            <li><a href="#skills" id="navSkills">Skills</a></li>
+            <li><a href="#projects" id="navProjects">Projects</a></li>
+            <li><a href="#contact" id="navContact">Contact</a></li>
+        </ul>
+        <button id="langSwitch" class="btn lang-btn">Deutsch</button>
+    </nav>
+    <header>
+        <h1 id="headerHi">Hi, I'm <span class="accent">Boris</span></h1>
+        <h2 id="headerRole">Ethical Hacker & Programmer</h2>
+        <p id="headerSub">Securing the web, one line of code at a time.</p>
+        <a href="#contact" class="btn" id="headerBtn">Get in Touch</a>
+    </header>
+    <section id="about">
+        <h2 id="aboutTitle">About Me</h2>
+        <p id="aboutText">
+            I’m an ethical hacker and programmer passionate about cybersecurity and building robust software. 
+            My mission: make the internet safer by finding vulnerabilities before the bad guys do.
+        </p>
+    </section>
+    <section id="skills">
+        <h2 id="skillsTitle">Skills</h2>
+        <div class="skills-grid">
+            <div class="skill">Penetration Testing</div>
+            <div class="skill">Web Security</div>
+            <div class="skill">Python</div>
+            <div class="skill">JavaScript</div>
+            <div class="skill">C/C++</div>
+            <div class="skill">Linux</div>
+            <div class="skill">Reverse Engineering</div>
+            <div class="skill">Bug Bounty</div>
+        </div>
+    </section>
+    <section id="projects">
+        <h2 id="projectsTitle">Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3 id="project1Title">VulnFinder</h3>
+                <p id="project1Desc">Automated vulnerability scanner for web apps (Python).</p>
+                <a href="#" target="_blank">GitHub</a>
+            </div>
+            <div class="project-card">
+                <h3 id="project2Title">SecureChat</h3>
+                <p id="project2Desc">End-to-end encrypted chat application (JavaScript & Node.js).</p>
+                <a href="#" target="_blank">GitHub</a>
+            </div>
+            <div class="project-card">
+                <h3 id="project3Title">Linux Exploit Playground</h3>
+                <p id="project3Desc">A safe environment to learn and test exploits.</p>
+                <a href="#" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </section>
+    <section id="contact">
+        <h2 id="contactTitle">Contact</h2>
+        <form id="contactForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <button type="submit" id="contactBtn" class="btn">Send</button>
+            <p id="formMsg"></p>
+        </form>
+    </section>
+    <footer>
+        <p id="footerText">&copy; 2025 Boris | Ethical Hacker & Programmer</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
