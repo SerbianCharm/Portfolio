@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ethical Hacker Portfolio</title>
+    <title>Boris Maksimovic</title>
     <style>
         :root {
             --bg-color: #0a0a0a;
@@ -43,6 +43,16 @@
             display: flex;
             justify-content: space-between;
             z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        /* New class for the blurry background when scrolling */
+        nav.scrolled {
+            background-color: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.1);
+            padding: 15px 5%;
         }
 
         .logo {
@@ -132,16 +142,19 @@
         }
 
         .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         .skill {
+            flex: 1 1 150px;
             padding: 15px;
-            background-color: rgba(0, 255, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.7);
             border-left: 3px solid var(--accent-color);
             transition: transform 0.3s;
+            text-align: center;
         }
 
         .skill:hover {
@@ -151,7 +164,7 @@
         .project {
             margin-bottom: 40px;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.7);
             border-left: 3px solid var(--accent-color);
             transition: transform 0.3s;
         }
@@ -180,7 +193,7 @@
 
         .social-links a {
             color: var(--text-color);
-            font-size: 1.5em;
+            font-size: 1em;
             transition: color 0.3s;
         }
 
@@ -190,7 +203,7 @@
 
         .terminal {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 150px auto 0 auto;
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.7);
             border-radius: 5px;
@@ -244,67 +257,113 @@
             .subtitle { font-size: 1.2em; }
             .skills-container { grid-template-columns: 1fr 1fr; }
         }
+
+        .about-box {
+            background-color: rgba(0,0,0,0.8);
+            border-left: 4px solid var(--accent-color);
+            padding: 25px 30px 20px 30px;
+            margin: 30px 0 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,255,0,0.06);
+        }
+
+        .about-list {
+            color: var(--text-color);
+            font-size: 1.12em;
+            line-height: 1.6;
+            list-style: disc inside;
+            margin-bottom: 15px;
+        }
+
+        .about-list li {
+            margin-bottom: 7px;
+        }
+
+        .about-note {
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <canvas class="matrix-bg" id="matrixCanvas"></canvas>
 
-    <nav>
-        <div class="logo">SEC://CODER</div>
+    <nav id="navbar">
+        <div class="logo"></div>
         <div class="menu">
             <a href="#about">About</a>
             <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+            <a href="#projects">Projects & Vulnerabilities</a>
         </div>
     </nav>
 
     <header id="about">
-        <h1 class="glitch-text" data-text="Ethical Hacker">Ethical Hacker</h1>
-        <p class="subtitle typing" id="typing-text">Security Researcher & Developer</p>
-        <p>I find vulnerabilities so others can't exploit them. Focused on securing digital infrastructure through ethical hacking and clean code.</p>
+        <h1 class="glitch-text" data-text="Boris Maksimovic">Boris Maksimovic</h1>
+        <p class="subtitle typing" id="typing-text">Ethical Hacker &amp; Developer</p>
+        <p>I find vulnerabilities so others can't exploit them.</p>
+        <div class="about-box">
+            <ul class="about-list">
+                <li>Bachelor’s degree in Information and Communication Technology, specialized in IT Security</li>
+                <li>Currently pursuing a Master’s in IT Security</li>
+                <li>Certified Ethical Hacker (CEH)</li>
+                <li>4 years of professional experience in the IT industry</li>
+            </ul>
+            <p class="about-note"><sub><i>And yes, I'm a Matrix fanboy, hence the background...</i></sub></p>
+        </div>
         <div style="margin-top: 30px;">
-            <a href="#contact" class="cta-button">CONNECT</a>
+            <a href="mailto:b.maksimovic@gmx.at" class="cta-button">Email Me</a>
         </div>
     </header>
 
     <section id="skills">
-        <h2>Technical Arsenal</h2>
+        <h2>Skills</h2>
         <div class="skills-container">
-            <div class="skill">Penetration Testing</div>
-            <div class="skill">Vulnerability Assessment</div>
-            <div class="skill">Network Security</div>
             <div class="skill">Python</div>
             <div class="skill">JavaScript</div>
             <div class="skill">C/C++</div>
+            <div class="skill">SQL</div>
+            <div class="skill">PowerShell</div>
             <div class="skill">Shell Scripting</div>
-            <div class="skill">OWASP Top 10</div>
-            <div class="skill">Reverse Engineering</div>
-            <div class="skill">Social Engineering</div>
-            <div class="skill">Cryptography</div>
-            <div class="skill">Malware Analysis</div>
+        </div>
+        <div class="skills-container">
+            <div class="skill">Security Auditing & Reporting</div>
+            <div class="skill">Network Security & Analysis</div>
+            <div class="skill">Web Application Security</div>
+            <div class="skill">Vulnerability Assessment of IoT devices</div>
         </div>
     </section>
 
     <section id="projects">
-        <h2>Secured Systems</h2>
+        <h2>Dev-Projects & Vulnerability Findings</h2>
         
         <div class="project">
-            <h3>VulnScanner Pro</h3>
-            <p>Automated security assessment tool that identified 37 critical vulnerabilities across client systems.</p>
-            <p><strong>Technologies:</strong> Python, Docker, REST APIs</p>
+            <h3>IDOR Vulnerability – FH Technikum Wien CIS</h3>
+            <p>Discovered an insecure direct object reference (IDOR) vulnerability in the CIS platform, enabling unauthorized access to hidden tables and sensitive database schema information.</p>
+            <p><strong>Technologies:</strong> Web Applications, Access Control</p>
         </div>
         
         <div class="project">
-            <h3>SecureAuth Framework</h3>
-            <p>Zero-trust authentication system implementing multi-factor verification with minimal user friction.</p>
-            <p><strong>Technologies:</strong> Node.js, JWT, Biometric Integration</p>
+            <h3>Metadata Exposure – FH Technikum Wien Documents</h3>
+            <p>Identified a flaw in document handling that allowed extraction of sensitive metadata such as usernames, version numbers, and full names from internal documents.</p>
+            <p><strong>Technologies:</strong> Data Security, Metadata Management</p>
         </div>
         
         <div class="project">
-            <h3>NetworkGuardian</h3>
-            <p>Real-time network traffic analyzer that detected unusual patterns and potential intrusions.</p>
-            <p><strong>Technologies:</strong> Go, ML Algorithms, Packet Analysis</p>
+            <h3>IDOR Vulnerability – IDM.ONe System</h3>
+            <p>Uncovered an IDOR vulnerability in the IDM.ONe identity management system, permitting access to highly sensitive requests by manipulating request numbers.</p>
+            <p><strong>Technologies:</strong> Identity Management, Web Security</p>
+        </div>
+
+        <div class="project">
+            <h3>Compromise of Telepresence Robot (M2-T) via Default Credentials (Bachelor Thesis)</h3>
+            <p>Physical and digital penetration testing of a telepresence robot in a hospital environment demonstrated that administrative access—including permission management, remote control, and mapping functions—could be obtained using a widely-known default password.</p>
+            <p><strong>Technologies:</strong> IoT Robotics, Embedded Systems, Authentication Security</p>
+        </div>
+        
+        <div class="project">
+            <h3>IP Camera Vulnerability Assessment (Bachelor Thesis)</h3>
+            <p>Conducted a systematic security analysis of medical IP cameras and discovered that 80% of evaluated devices were accessible via unchanged default credentials. This critical oversight enabled potential unauthorized access to sensitive real-time video streams within healthcare environments.</p>
+            <p><strong>Technologies:</strong> Shodan, Hydra, PowerShell, Python, IoT Security</p>
         </div>
 
         <div class="terminal">
@@ -314,28 +373,22 @@
                     <div class="terminal-button yellow"></div>
                     <div class="terminal-button green"></div>
                 </div>
-                <div class="terminal-title">bash ~ ethical-hacker</div>
+                <div class="terminal-title">boris@EthicalHacker:~ </div>
             </div>
             <div class="terminal-content" id="terminal-content">
-                $ <span id="command-text"></span>
+                <span id="command-text"></span>
             </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2>Establish Connection</h2>
-        <p>Ready to secure your systems or discuss collaboration opportunities?</p>
-        <p>contact@ethicalhacker.com</p>
-        <div class="social-links">
-            <a href="#">GitHub</a>
-            <a href="#">LinkedIn</a>
-            <a href="#">Twitter</a>
         </div>
     </section>
 
     <footer>
-        <p>© 2025 | Ethical Hacker & Security Expert</p>
-        <p>This site uses no tracking or cookies - your privacy matters.</p>
+        <p>© 2025 | Ethical Hacker & Developer</p>
+        <p>This site uses no tracking or cookies - privacy matters.</p>
+        <div class="social-links">
+            <a href="https://github.com/SerbianCharm" target="_blank">GitHub</a>
+            <a href="https://tryhackme.com/p/SerbianCharm" target="_blank">TryHackMe</a>
+            <a href="https://app.hackthebox.com/profile/2328607" target="_blank">HackTheBox</a>
+        </div>
     </footer>
 
     <script>
@@ -357,8 +410,16 @@
             const drops = Array(columns).fill(1);
             
             const matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
-            
+
+            let frameCount = 0;
+
             function draw() {
+                frameCount++;
+                // Adjust this number to control speed (higher = slower)
+                if (frameCount % 6 !== 0) { 
+                    requestAnimationFrame(draw);
+                    return;
+                }
                 // Transparenter schwarzer Hintergrund für den Trailing-Effekt
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -462,6 +523,16 @@
                 glitchText.style.textShadow = 'none';
             }, 50);
         }, 3000);
+        
+        // Add scroll event to apply blurry background to navbar
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
     </script>
 </body>
 </html>
