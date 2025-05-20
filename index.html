@@ -3,79 +3,465 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boris | Ethical Hacker & Programmer</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Ethical Hacker Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #f0f0f0;
+            --accent-color: #00ff00;
+            --secondary-color: #004400;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            position: relative;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: var(--accent-color);
+        }
+
+        .menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .menu a:hover {
+            color: var(--accent-color);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+        }
+
+        .glitch-text {
+            position: relative;
+            color: var(--text-color);
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch-text::before {
+            color: var(--accent-color);
+            z-index: -1;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .typing {
+            border-right: 2px solid var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        section {
+            padding: 80px 5%;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .skill {
+            padding: 15px;
+            background-color: rgba(0, 255, 0, 0.1);
+            border-left: 3px solid var(--accent-color);
+            transition: transform 0.3s;
+        }
+
+        .skill:hover {
+            transform: translateY(-5px);
+        }
+
+        .project {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--accent-color);
+            transition: transform 0.3s;
+        }
+
+        .project:hover {
+            transform: translateX(10px);
+        }
+
+        .project h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            padding: 40px 5%;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.5em;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .terminal {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 5px;
+            margin-right: 10px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-button.red { background-color: #ff5f56; }
+        .terminal-button.yellow { background-color: #ffbd2e; }
+        .terminal-button.green { background-color: #27c93f; }
+
+        .terminal-title {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        .terminal-content {
+            color: var(--accent-color);
+            font-family: 'Courier New', monospace;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .subtitle { font-size: 1.2em; }
+            .skills-container { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
 </head>
 <body>
+    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+
     <nav>
-        <div class="logo">Boris</div>
-        <ul>
-            <li><a href="#about" id="navAbout">About</a></li>
-            <li><a href="#skills" id="navSkills">Skills</a></li>
-            <li><a href="#projects" id="navProjects">Projects</a></li>
-            <li><a href="#contact" id="navContact">Contact</a></li>
-        </ul>
-        <button id="langSwitch" class="btn lang-btn">Deutsch</button>
+        <div class="logo">SEC://CODER</div>
+        <div class="menu">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
     </nav>
-    <header>
-        <h1 id="headerHi">Hi, I'm <span class="accent">Boris</span></h1>
-        <h2 id="headerRole">Ethical Hacker & Programmer</h2>
-        <p id="headerSub">Securing the web, one line of code at a time.</p>
-        <a href="#contact" class="btn" id="headerBtn">Get in Touch</a>
+
+    <header id="about">
+        <h1 class="glitch-text" data-text="Ethical Hacker">Ethical Hacker</h1>
+        <p class="subtitle typing" id="typing-text">Security Researcher & Developer</p>
+        <p>I find vulnerabilities so others can't exploit them. Focused on securing digital infrastructure through ethical hacking and clean code.</p>
+        <div style="margin-top: 30px;">
+            <a href="#contact" class="cta-button">CONNECT</a>
+        </div>
     </header>
-    <section id="about">
-        <h2 id="aboutTitle">About Me</h2>
-        <p id="aboutText">
-            I’m an ethical hacker and programmer passionate about cybersecurity and building robust software. 
-            My mission: make the internet safer by finding vulnerabilities before the bad guys do.
-        </p>
-    </section>
+
     <section id="skills">
-        <h2 id="skillsTitle">Skills</h2>
-        <div class="skills-grid">
+        <h2>Technical Arsenal</h2>
+        <div class="skills-container">
             <div class="skill">Penetration Testing</div>
-            <div class="skill">Web Security</div>
+            <div class="skill">Vulnerability Assessment</div>
+            <div class="skill">Network Security</div>
             <div class="skill">Python</div>
             <div class="skill">JavaScript</div>
             <div class="skill">C/C++</div>
-            <div class="skill">Linux</div>
+            <div class="skill">Shell Scripting</div>
+            <div class="skill">OWASP Top 10</div>
             <div class="skill">Reverse Engineering</div>
-            <div class="skill">Bug Bounty</div>
+            <div class="skill">Social Engineering</div>
+            <div class="skill">Cryptography</div>
+            <div class="skill">Malware Analysis</div>
         </div>
     </section>
+
     <section id="projects">
-        <h2 id="projectsTitle">Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <h3 id="project1Title">VulnFinder</h3>
-                <p id="project1Desc">Automated vulnerability scanner for web apps (Python).</p>
-                <a href="#" target="_blank">GitHub</a>
+        <h2>Secured Systems</h2>
+        
+        <div class="project">
+            <h3>VulnScanner Pro</h3>
+            <p>Automated security assessment tool that identified 37 critical vulnerabilities across client systems.</p>
+            <p><strong>Technologies:</strong> Python, Docker, REST APIs</p>
+        </div>
+        
+        <div class="project">
+            <h3>SecureAuth Framework</h3>
+            <p>Zero-trust authentication system implementing multi-factor verification with minimal user friction.</p>
+            <p><strong>Technologies:</strong> Node.js, JWT, Biometric Integration</p>
+        </div>
+        
+        <div class="project">
+            <h3>NetworkGuardian</h3>
+            <p>Real-time network traffic analyzer that detected unusual patterns and potential intrusions.</p>
+            <p><strong>Technologies:</strong> Go, ML Algorithms, Packet Analysis</p>
+        </div>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <div class="terminal-button red"></div>
+                    <div class="terminal-button yellow"></div>
+                    <div class="terminal-button green"></div>
+                </div>
+                <div class="terminal-title">bash ~ ethical-hacker</div>
             </div>
-            <div class="project-card">
-                <h3 id="project2Title">SecureChat</h3>
-                <p id="project2Desc">End-to-end encrypted chat application (JavaScript & Node.js).</p>
-                <a href="#" target="_blank">GitHub</a>
-            </div>
-            <div class="project-card">
-                <h3 id="project3Title">Linux Exploit Playground</h3>
-                <p id="project3Desc">A safe environment to learn and test exploits.</p>
-                <a href="#" target="_blank">GitHub</a>
+            <div class="terminal-content" id="terminal-content">
+                $ <span id="command-text"></span>
             </div>
         </div>
     </section>
+
     <section id="contact">
-        <h2 id="contactTitle">Contact</h2>
-        <form id="contactForm">
-            <input type="text" id="name" placeholder="Your Name" required>
-            <input type="email" id="email" placeholder="Your Email" required>
-            <textarea id="message" placeholder="Your Message" required></textarea>
-            <button type="submit" id="contactBtn" class="btn">Send</button>
-            <p id="formMsg"></p>
-        </form>
+        <h2>Establish Connection</h2>
+        <p>Ready to secure your systems or discuss collaboration opportunities?</p>
+        <p>contact@ethicalhacker.com</p>
+        <div class="social-links">
+            <a href="#">GitHub</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Twitter</a>
+        </div>
     </section>
+
     <footer>
-        <p id="footerText">&copy; 2025 Boris | Ethical Hacker & Programmer</p>
+        <p>© 2025 | Ethical Hacker & Security Expert</p>
+        <p>This site uses no tracking or cookies - your privacy matters.</p>
     </footer>
-    <script src="script.js"></script>
+
+    <script>
+        // Matrix rain background effect - mit verbesserter Initialisierung
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Stelle sicher, dass die Canvas-Größe korrekt ist
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            
+            const fontSize = 14;
+            const columns = Math.ceil(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+            
+            const matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+            
+            function draw() {
+                // Transparenter schwarzer Hintergrund für den Trailing-Effekt
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Matrix-Zeichen
+                ctx.fillStyle = '#00ff00';
+                ctx.font = fontSize + 'px monospace';
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = matrix[Math.floor(Math.random() * matrix.length)];
+                    
+                    // Zeichne das Matrix-Symbol
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    // Reset der Tropfen, zufällige Wahrscheinlichkeit
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    
+                    // Erhöhe die Position des Tropfens
+                    drops[i]++;
+                }
+                
+                requestAnimationFrame(draw);
+            }
+            
+            // Starte die Animation
+            draw();
+            
+            // Window resize Event-Handler
+            window.addEventListener('resize', resizeCanvas);
+        });
+        
+        // Typing effect
+        const typingText = document.getElementById('typing-text');
+        const text = typingText.textContent;
+        typingText.textContent = '';
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < text.length) {
+                typingText.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        
+        setTimeout(typeWriter, 1000);
+        
+        // Terminal effect
+        const terminalContent = document.getElementById('terminal-content');
+        const commandText = document.getElementById('command-text');
+        const commands = [
+            'scanning for vulnerabilities...',
+            'access granted...',
+            'encrypting data...',
+            'analyzing network traffic...',
+            'detecting intrusion attempts...'
+        ];
+        
+        let cmdIndex = 0;
+        let charIndex = 0;
+        
+        function typeCommand() {
+            if (charIndex < commands[cmdIndex].length) {
+                commandText.textContent += commands[cmdIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(typeCommand, 50);
+            } else {
+                setTimeout(() => {
+                    charIndex = 0;
+                    commandText.textContent = '';
+                    cmdIndex = (cmdIndex + 1) % commands.length;
+                    typeCommand();
+                }, 2000);
+            }
+        }
+        
+        setTimeout(typeCommand, 2000);
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Glitch effect
+        const glitchText = document.querySelector('.glitch-text');
+        
+        setInterval(() => {
+            glitchText.style.textShadow = `
+                ${Math.random() * 5}px ${Math.random() * 5}px ${Math.random() * 5}px rgba(0,255,0,0.7),
+                ${Math.random() * -5}px ${Math.random() * 5}px ${Math.random() * 5}px rgba(255,0,0,0.7)
+            `;
+            
+            setTimeout(() => {
+                glitchText.style.textShadow = 'none';
+            }, 50);
+        }, 3000);
+    </script>
 </body>
 </html>
