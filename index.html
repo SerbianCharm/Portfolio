@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,6 +74,24 @@
 
         .menu a:hover {
             color: var(--accent-color);
+        }
+
+        /* Language switcher styles */
+        .lang-switch {
+            margin-left: 20px;
+            color: var(--accent-color);
+            cursor: pointer;
+            background: none;
+            border: 1px solid var(--accent-color);
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .lang-switch:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
         }
 
         h1 {
@@ -283,6 +301,20 @@
             color: var(--accent-color);
             margin-top: 5px;
         }
+
+        /* Hide all English content by default */
+        .en {
+            display: none;
+        }
+
+        /* When language is set to English */
+        html[lang="en"] .en {
+            display: block;
+        }
+
+        html[lang="en"] .de {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -291,24 +323,37 @@
     <nav id="navbar">
         <div class="logo"></div>
         <div class="menu">
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects & Vulnerabilities</a>
+            <a href="#about" class="de">Über mich</a>
+            <a href="#about" class="en">About me</a>
+            <a href="#skills" class="de">Fähigkeiten</a>
+            <a href="#skills" class="en">Skills</a>
+            <a href="#projects" class="de">Projekte & Schwachstellen</a>
+            <a href="#projects" class="en">Projects & Vulnerabilities</a>
+            <button class="lang-switch" id="langSwitch"><span id="langFlag">🇬🇧</span> English</button>
         </div>
     </nav>
 
     <header id="about">
         <h1 class="glitch-text" data-text="Boris Maksimovic">Boris Maksimovic</h1>
-        <p class="subtitle typing" id="typing-text">Ethical Hacker &amp; Developer</p>
-        <p>I find vulnerabilities so others can't exploit them.</p>
+        <p class="subtitle typing de" id="typing-text-de">Ethischer Hacker & Entwickler</p>
+        <p class="subtitle typing en" id="typing-text-en">Ethical Hacker & Developer</p>
+        <p class="de">Ich finde Schwachstellen, bevor andere sie ausnutzen können.</p>
+        <p class="en">I find vulnerabilities so others can't exploit them.</p>
         <div class="about-box">
-            <ul class="about-list">
-                <li>Bachelor’s degree in Information and Communication Technology, specialized in IT Security</li>
-                <li>Currently pursuing a Master’s in IT Security</li>
+            <ul class="about-list de">
+                <li>Bachelor-Abschluss in Informations- und Kommunikationssysteme, Spezialisierung auf IT-Sicherheit</li>
+                <li>Derzeit Masterstudium in IT-Sicherheit</li>
+                <li>Certified Ethical Hacker (CEH)</li>
+                <li>4 Jahre Berufserfahrung in der IT-Branche</li>
+            </ul>
+            <ul class="about-list en">
+                <li>Bachelor's degree in Information and Communication Systems and Services, specialized in IT Security</li>
+                <li>Currently pursuing a Master's in IT Security</li>
                 <li>Certified Ethical Hacker (CEH)</li>
                 <li>4 years of professional experience in the IT industry</li>
             </ul>
-            <p class="about-note"><sub><i>And yes, I'm a Matrix fanboy, hence the background...</i></sub></p>
+            <p class="about-note de"><sub><i>Kleiner Funfact am Rande: Der Hintergrund ist eine Hommage an Matrix...</i></sub></p>
+            <p class="about-note en"><sub><i>Little fun fact on the side: The background is my way of paying tribute to Matrix...</i></sub></p>
         </div>
         <div style="margin-top: 30px;">
             <a href="mailto:b.maksimovic@gmx.at" class="cta-button">Email Me</a>
@@ -316,7 +361,8 @@
     </header>
 
     <section id="skills">
-        <h2>Skills</h2>
+        <h2 class="de">Fähigkeiten</h2>
+        <h2 class="en">Skills</h2>
         <div class="skills-container">
             <div class="skill">Python</div>
             <div class="skill">JavaScript</div>
@@ -326,44 +372,64 @@
             <div class="skill">Shell Scripting</div>
         </div>
         <div class="skills-container">
-            <div class="skill">Security Auditing & Reporting</div>
-            <div class="skill">Network Security & Analysis</div>
-            <div class="skill">Web Application Security</div>
-            <div class="skill">Vulnerability Assessment of IoT devices</div>
+            <div class="skill de">Sicherheitsaudits & Berichterstattung</div>
+            <div class="skill en">Security Audits & Reporting</div>
+            <div class="skill de">Netzwerksicherheit & Analyse</div>
+            <div class="skill en">Network Security & Analysis</div>
+            <div class="skill de">Webanwendungssicherheit</div>
+            <div class="skill en">Web Application Security</div>
+            <div class="skill de">Schwachstellenbewertung von IoT-Geräten</div>
+            <div class="skill en">IoT Device Vulnerability Assessment</div>
         </div>
     </section>
 
     <section id="projects">
-        <h2>Dev-Projects & Vulnerability Findings</h2>
+        <h2 class="de">Dev-Projekte & Gefundene Schwachstellen</h2>
+        <h2 class="en">Dev-Projects & Vulnerability Findings</h2>
         
         <div class="project">
-            <h3>IDOR Vulnerability – FH Technikum Wien CIS</h3>
-            <p>Discovered an insecure direct object reference (IDOR) vulnerability in the CIS platform, enabling unauthorized access to hidden tables and sensitive database schema information.</p>
-            <p><strong>Technologies:</strong> Web Applications, Access Control</p>
+            <h3 class="de">IDOR-Schwachstelle – FH Technikum Wien CIS</h3>
+            <h3 class="en">IDOR Vulnerability – FH Technikum Wien CIS</h3>
+            <p class="de">Entdeckung einer Schwachstelle mit unsicherer direkter Objektreferenz (IDOR) in der CIS-Plattform, die unbefugten Zugriff auf versteckte Tabellen und sensible Datenbankschema-Informationen ermöglichte.</p>
+            <p class="en">Discovered an insecure direct object reference (IDOR) vulnerability in the CIS platform, enabling unauthorized access to hidden tables and sensitive database schema information.</p>
+            <p class="de"><strong>Technologien:</strong> Webanwendungen, Zugriffskontrolle</p>
+            <p class="en"><strong>Technologies:</strong> Web Applications, Access Control</p>
         </div>
         
         <div class="project">
-            <h3>Metadata Exposure – FH Technikum Wien Documents</h3>
-            <p>Identified a flaw in document handling that allowed extraction of sensitive metadata such as usernames, version numbers, and full names from internal documents.</p>
-            <p><strong>Technologies:</strong> Data Security, Metadata Management</p>
+            <h3 class="de">Metadaten-Offenlegung – FH Technikum Wien Dokumente</h3>
+            <h3 class="en">Metadata Exposure – FH Technikum Wien Documents</h3>
+            <p class="de">Identifizierung eines Fehlers in der Dokumentenverarbeitung, der die Extraktion sensibler Metadaten wie Benutzernamen, Versionsnummern und vollständige Namen aus internen Dokumenten ermöglichte.</p>
+            <p class="en">Identified a flaw in document handling that allowed extraction of sensitive metadata such as usernames, version numbers, and full names from internal documents.</p>
+            <p class="de"><strong>Technologien:</strong> Datensicherheit, Metadaten-Management</p>
+            <p class="en"><strong>Technologies:</strong> Data Security, Metadata Management</p>
         </div>
         
         <div class="project">
-            <h3>IDOR Vulnerability – IDM.ONe System</h3>
-            <p>Uncovered an IDOR vulnerability in the IDM.ONe identity management system, permitting access to highly sensitive requests by manipulating request numbers.</p>
-            <p><strong>Technologies:</strong> Identity Management, Web Security</p>
+            <h3 class="de">IDOR-Schwachstelle – IDM.ONe System</h3>
+            <h3 class="en">IDOR Vulnerability – IDM.ONe System</h3>
+            <p class="de">Aufdeckung einer IDOR-Schwachstelle im Identitätsmanagementsystem IDM.ONe, die durch Manipulation von Anfragenummern den Zugriff auf hochsensible Anfragen ermöglichte.</p>
+            <p class="en">Uncovered an IDOR vulnerability in the IDM.ONe identity management system, permitting access to highly sensitive requests by manipulating request numbers.</p>
+            <p class="de"><strong>Technologien:</strong> Identitätsmanagement, Websicherheit</p>
+            <p class="en"><strong>Technologies:</strong> Identity Management, Web Security</p>
         </div>
 
         <div class="project">
-            <h3>Compromise of Telepresence Robot (M2-T) via Default Credentials (Bachelor Thesis)</h3>
-            <p>Physical and digital penetration testing of a telepresence robot in a hospital environment demonstrated that administrative access—including permission management, remote control, and mapping functions—could be obtained using a widely-known default password.</p>
-            <p><strong>Technologies:</strong> IoT Robotics, Embedded Systems, Authentication Security</p>
+            <h3 class="de">Kompromittierung eines Telepräsenzroboters (M2-T) durch Standardanmeldedaten (Bachelorarbeit)</h3>
+            <h3 class="en">Compromise of Telepresence Robot (M2-T) via Default Credentials (Bachelor Thesis)</h3>
+            <p class="de">Im Rahmen physischer und digitaler Penetrationstests eines Telepräsenzroboters in einer Krankenhausumgebung zeigte sich, dass administrativer Zugriff – einschließlich der Verwaltung von Berechtigungen, Fernsteuerung und Kartierungsfunktionen – durch die Nutzung eines weithin bekannten Standardpassworts möglich war.</p>
+            <p class="en">As part of physical and digital penetration tests of a telepresence robot in a hospital environment, it was found that administrative access—including permission management, remote control, and mapping functions—was possible using a widely known default password.</p>
+            <p class="de"><strong>Technologien:</strong> IoT-Robotik, Eingebettete Systeme, Authentifizierungssicherheit</p>
+            <p class="en"><strong>Technologies:</strong> IoT Robotics, Embedded Systems, Authentication Security</p>
         </div>
         
         <div class="project">
-            <h3>IP Camera Vulnerability Assessment (Bachelor Thesis)</h3>
-            <p>Conducted a systematic security analysis of medical IP cameras and discovered that 80% of evaluated devices were accessible via unchanged default credentials. This critical oversight enabled potential unauthorized access to sensitive real-time video streams within healthcare environments.</p>
-            <p><strong>Technologies:</strong> Shodan, Hydra, PowerShell, Python, IoT Security</p>
+            <h3 class="de">Schwachstellenanalyse von IP-Kameras (Bachelorarbeit)</h3>
+            <h3 class="en">Vulnerability Analysis of IP Cameras (Bachelor Thesis)</h3>
+            <p class="de">Im Rahmen einer systematischen Sicherheitsanalyse medizinischer IP-Kameras zeigte sich, dass bei 80% der untersuchten Geräte weiterhin die werkseitigen Standard-Zugangsdaten genutzt wurden. Dieses gravierende Problem könnte unbefugten Zugriff auf sensible Echtzeit-Videostreams in medizinischen Einrichtungen ermöglichen.</p>
+            <p class="en">As part of a systematic security analysis of medical IP cameras, it was found that 80% of the devices examined were still using the default factory login credentials. This critical issue could allow unauthorized access to sensitive real-time video streams in medical facilities.</p>
+            <p class="de"><strong>Technologien:</strong> Shodan, Hydra, PowerShell, Python, IoT-Sicherheit</p>
+            <p class="en"><strong>Technologies:</strong> Shodan, Hydra, PowerShell, Python, IoT Security</p>
         </div>
 
         <div class="terminal">
@@ -382,8 +448,10 @@
     </section>
 
     <footer>
-        <p>© 2025 | Ethical Hacker & Developer</p>
-        <p>This site uses no tracking or cookies - privacy matters.</p>
+        <p class="de">© 2025 | Ethischer Hacker & Entwickler</p>
+        <p class="en">© 2025 | Ethical Hacker & Developer</p>
+        <p class="de">Diese Seite verwendet keine Tracking oder Cookies - Datenschutz ist mir wichtig.</p>
+        <p class="en">This site uses no tracking or cookies - privacy matters.</p>
         <div class="social-links">
             <a href="https://github.com/SerbianCharm" target="_blank">GitHub</a>
             <a href="https://tryhackme.com/p/SerbianCharm" target="_blank">TryHackMe</a>
@@ -392,12 +460,51 @@
     </footer>
 
     <script>
-        // Matrix rain background effect - mit verbesserter Initialisierung
+        // Language switcher
+        document.addEventListener('DOMContentLoaded', () => {
+            const langSwitch = document.getElementById('langSwitch');
+            const htmlTag = document.documentElement;
+            
+            // Check for saved language preference
+            const savedLang = localStorage.getItem('language') || 'de';
+            htmlTag.setAttribute('lang', savedLang);
+            
+            // Update button text based on current language
+            updateLangButtonText();
+            
+            // Set up typing effect for current language
+            setupTypingEffect();
+            
+            langSwitch.addEventListener('click', () => {
+                const currentLang = htmlTag.getAttribute('lang');
+                const newLang = currentLang === 'de' ? 'en' : 'de';
+                
+                htmlTag.setAttribute('lang', newLang);
+                localStorage.setItem('language', newLang);
+                
+                // Update button text
+                updateLangButtonText();
+                
+                // Reset and start typing effect in new language
+                resetTypingEffect();
+            });
+            
+        function updateLangButtonText() {
+            const currentLang = htmlTag.getAttribute('lang');
+        if (currentLang === 'de') {
+            langSwitch.innerHTML = '<span id="langFlag">🇬🇧</span> English';
+        } else {
+            langSwitch.innerHTML = '<span id="langFlag">🇩🇪</span> Deutsch';
+            }
+        }
+        });
+
+        // Matrix rain background effect
         document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById('matrixCanvas');
             const ctx = canvas.getContext('2d');
             
-            // Stelle sicher, dass die Canvas-Größe korrekt ist
+            // Ensuring the canvas size is correct
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
@@ -415,123 +522,148 @@
 
             function draw() {
                 frameCount++;
-                // Adjust this number to control speed (higher = slower)
                 if (frameCount % 6 !== 0) { 
                     requestAnimationFrame(draw);
                     return;
                 }
-                // Transparenter schwarzer Hintergrund für den Trailing-Effekt
+                // Transparent black background for trailing effect
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
-                // Matrix-Zeichen
+                // Matrix characters
                 ctx.fillStyle = '#00ff00';
                 ctx.font = fontSize + 'px monospace';
                 
                 for (let i = 0; i < drops.length; i++) {
                     const text = matrix[Math.floor(Math.random() * matrix.length)];
                     
-                    // Zeichne das Matrix-Symbol
+                    // Draw the matrix symbol
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
                     
-                    // Reset der Tropfen, zufällige Wahrscheinlichkeit
+                    // Reset drops, random probability
                     if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                         drops[i] = 0;
                     }
                     
-                    // Erhöhe die Position des Tropfens
+                    // Increase drop position
                     drops[i]++;
                 }
                 
                 requestAnimationFrame(draw);
             }
             
-            // Starte die Animation
+            // Start animation
             draw();
             
-            // Window resize Event-Handler
+            // Window resize event handler
             window.addEventListener('resize', resizeCanvas);
         });
         
         // Typing effect
-        const typingText = document.getElementById('typing-text');
-        const text = typingText.textContent;
-        typingText.textContent = '';
-        let i = 0;
-        
-        function typeWriter() {
-            if (i < text.length) {
-                typingText.textContent += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 100);
+        function setupTypingEffect() {
+            const currentLang = document.documentElement.getAttribute('lang');
+            const typingText = currentLang === 'de' ? 
+                document.getElementById('typing-text-de') : 
+                document.getElementById('typing-text-en');
+            
+            if (typingText.classList.contains('typed')) return;
+            
+            const text = typingText.textContent;
+            typingText.textContent = '';
+            typingText.classList.add('typed');
+            
+            let i = 0;
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    typingText.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
             }
+            
+            setTimeout(typeWriter, 100);
         }
         
-        setTimeout(typeWriter, 1000);
+        function resetTypingEffect() {
+            document.getElementById('typing-text-de').classList.remove('typed');
+            document.getElementById('typing-text-en').classList.remove('typed');
+            document.getElementById('typing-text-de').textContent = '';
+            document.getElementById('typing-text-en').textContent = '';
+            setupTypingEffect();
+        }
         
         // Terminal effect
-        const terminalContent = document.getElementById('terminal-content');
-        const commandText = document.getElementById('command-text');
-        const commands = [
-            'scanning for vulnerabilities...',
-            'access granted...',
-            'encrypting data...',
-            'analyzing network traffic...',
-            'detecting intrusion attempts...'
-        ];
-        
-        let cmdIndex = 0;
-        let charIndex = 0;
-        
-        function typeCommand() {
-            if (charIndex < commands[cmdIndex].length) {
-                commandText.textContent += commands[cmdIndex].charAt(charIndex);
-                charIndex++;
-                setTimeout(typeCommand, 50);
-            } else {
-                setTimeout(() => {
-                    charIndex = 0;
-                    commandText.textContent = '';
-                    cmdIndex = (cmdIndex + 1) % commands.length;
-                    typeCommand();
-                }, 2000);
+        document.addEventListener('DOMContentLoaded', () => {
+            const terminalContent = document.getElementById('terminal-content');
+            const commandText = document.getElementById('command-text');
+            
+            const commands = [
+                'scanning for vulnerabilities...',
+                'access granted...',
+                'encrypting data...',
+                'analyzing network traffic...',
+                'detecting intrusion attempts...'
+            ];
+            
+            let cmdIndex = 0;
+            let charIndex = 0;
+            
+            function typeCommand() {
+                if (charIndex < commands[cmdIndex].length) {
+                    commandText.textContent += commands[cmdIndex].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeCommand, 50);
+                } else {
+                    setTimeout(() => {
+                        charIndex = 0;
+                        commandText.textContent = '';
+                        cmdIndex = (cmdIndex + 1) % commands.length;
+                        typeCommand();
+                    }, 2000);
+                }
             }
-        }
-        
-        setTimeout(typeCommand, 2000);
+            
+            setTimeout(typeCommand, 2000);
+        });
         
         // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 });
             });
         });
 
         // Glitch effect
-        const glitchText = document.querySelector('.glitch-text');
-        
-        setInterval(() => {
-            glitchText.style.textShadow = `
-                ${Math.random() * 5}px ${Math.random() * 5}px ${Math.random() * 5}px rgba(0,255,0,0.7),
-                ${Math.random() * -5}px ${Math.random() * 5}px ${Math.random() * 5}px rgba(255,0,0,0.7)
-            `;
+        document.addEventListener('DOMContentLoaded', () => {
+            const glitchText = document.querySelector('.glitch-text');
             
-            setTimeout(() => {
-                glitchText.style.textShadow = 'none';
-            }, 50);
-        }, 3000);
+            setInterval(() => {
+                glitchText.style.textShadow = `
+                    ${Math.random() * 5}px ${Math.random() * 5}px ${Math.random() * 5}px rgba(0,255,0,0.7),
+                    ${Math.random() * -5}px ${Math.random() * 5}px ${Math.random() * 5}px rgba(255,0,0,0.7)
+                `;
+                
+                setTimeout(() => {
+                    glitchText.style.textShadow = 'none';
+                }, 50);
+            }, 3000);
+        });
         
-        // Add scroll event to apply blurry background to navbar
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
         });
     </script>
 </body>
