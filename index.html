@@ -372,8 +372,8 @@
 
     <header id="about">
         <h1 class="glitch-text" data-text="Boris Maksimovic">Boris Maksimovic</h1>
-        <p class="subtitle typing de" id="typing-text-de">Ethischer Hacker & Entwickler</p>
-        <p class="subtitle typing en" id="typing-text-en">Ethical Hacker & Developer</p>
+        <p class="subtitle typing de" id="typing-text-de" data-original-text="Ethischer Hacker & Entwickler">Ethischer Hacker & Entwickler</p>
+        <p class="subtitle typing en" id="typing-text-en" data-original-text="Ethical Hacker & Developer">Ethical Hacker & Developer</p>
         <p class="de">Ich finde Schwachstellen, bevor andere sie ausnutzen können.</p>
         <p class="en">Finding vulnerabilities before others can exploit them.</p>
         <div class="about-box">
@@ -399,10 +399,10 @@
 
     <section id="skills">
        <h2 class="de">
-            Fähigkeiten <span class="about-note" style="font-size: 0.5em; margin-left: 10px;"><sub><i>Mit der Maus über eine Programmiersprache fahren, um meine Skills zu sehen.</i></sub></span>
+            Fähigkeiten <span class="about-note" style="font-size: 0.5em; margin-left: 10px;"><sub><i>Maus/Touch für's Skill-Level</i></sub></span>
         </h2>
         <h2 class="en">
-            Skills <span class="about-note" style="font-size: 0.5em; margin-left: 10px;"><sub><i>Hover to display my skill bar for each programming language.</i></sub></span>
+            Skills <span class="about-note" style="font-size: 0.5em; margin-left: 10px;"><sub><i>Mouse/Touch for skill-level</i></sub></span>
         </h2>
         <div class="skills-container">
             <div class="skill" data-skill-level="65">
@@ -515,7 +515,7 @@
     <footer>
         <p class="de">© 2025 | Ethischer Hacker & Entwickler</p>
         <p class="en">© 2025 | Ethical Hacker & Developer</p>
-        <p class="de">Diese Seite verwendet keine Tracking oder Cookies - Datenschutz ist mir wichtig.</p>
+        <p class="de">Diese Seite verwendet kein Tracking oder Cookies - Datenschutz ist mir wichtig.</p>
         <p class="en">This site uses no tracking or cookies - privacy matters.</p>
         <div class="social-links">
             <a href="https://github.com/SerbianCharm" target="_blank">GitHub</a>
@@ -525,6 +525,10 @@
     </footer>
 
     <script>
+        // Global variables for typing animation
+        let currentTypingTimeout = null;
+        let typingAnimationRunning = false;
+
         // Language switcher
         document.addEventListener('DOMContentLoaded', () => {
             const langSwitch = document.getElementById('langSwitch');
@@ -538,7 +542,9 @@
             updateLangButtonText();
             
             // Set up typing effect for current language
-            setupTypingEffect();
+            setTimeout(() => {
+                setupTypingEffect();
+            }, 100);
             
             langSwitch.addEventListener('click', () => {
                 const currentLang = htmlTag.getAttribute('lang');
@@ -554,14 +560,14 @@
                 resetTypingEffect();
             });
             
-        function updateLangButtonText() {
-            const currentLang = htmlTag.getAttribute('lang');
-        if (currentLang === 'de') {
-            langSwitch.innerHTML = '<span id="langFlag">🇬🇧</span> English';
-        } else {
-            langSwitch.innerHTML = '<span id="langFlag">🇦🇹</span> Deutsch';
+            function updateLangButtonText() {
+                const currentLang = htmlTag.getAttribute('lang');
+                if (currentLang === 'de') {
+                    langSwitch.innerHTML = '<span id="langFlag">🇬🇧</span> English';
+                } else {
+                    langSwitch.innerHTML = '<span id="langFlag">🇦🇹</span> Deutsch';
+                }
             }
-        }
         });
 
         // Matrix rain background effect
@@ -624,38 +630,76 @@
             window.addEventListener('resize', resizeCanvas);
         });
         
-        // Typing effect
+        // Improved typing effect
         function setupTypingEffect() {
+            // Stop any existing typing animation
+            if (currentTypingTimeout) {
+                clearTimeout(currentTypingTimeout);
+                currentTypingTimeout = null;
+            }
+            
+            if (typingAnimationRunning) {
+                return;
+            }
+            
             const currentLang = document.documentElement.getAttribute('lang');
-            const typingText = currentLang === 'de' ? 
-                document.getElementById('typing-text-de') : 
-                document.getElementById('typing-text-en');
+            const typingTextDe = document.getElementById('typing-text-de');
+            const typingTextEn = document.getElementById('typing-text-en');
             
-            if (typingText.classList.contains('typed')) return;
+            // Get the currently visible element based on language
+            const typingText = currentLang === 'de' ? typingTextDe : typingTextEn;
             
-            const text = typingText.textContent;
+            // Get original text from data attribute
+            const originalText = typingText.getAttribute('data-original-text');
+            
+            if (!originalText) {
+                return;
+            }
+            
+            // Clear content and mark as running
             typingText.textContent = '';
             typingText.classList.add('typed');
+            typingAnimationRunning = true;
             
             let i = 0;
             
             function typeWriter() {
-                if (i < text.length) {
-                    typingText.textContent += text.charAt(i);
+                if (i < originalText.length && typingAnimationRunning) {
+                    typingText.textContent += originalText.charAt(i);
                     i++;
-                    setTimeout(typeWriter, 100);
+                    currentTypingTimeout = setTimeout(typeWriter, 100);
+                } else {
+                    typingAnimationRunning = false;
+                    currentTypingTimeout = null;
                 }
             }
             
-            setTimeout(typeWriter, 100);
+            // Start typing after a short delay
+            currentTypingTimeout = setTimeout(typeWriter, 200);
         }
         
         function resetTypingEffect() {
-            document.getElementById('typing-text-de').classList.remove('typed');
-            document.getElementById('typing-text-en').classList.remove('typed');
-            document.getElementById('typing-text-de').textContent = '';
-            document.getElementById('typing-text-en').textContent = '';
-            setupTypingEffect();
+            // Stop any running animation
+            if (currentTypingTimeout) {
+                clearTimeout(currentTypingTimeout);
+                currentTypingTimeout = null;
+            }
+            
+            typingAnimationRunning = false;
+            
+            // Reset both elements
+            const typingTextDe = document.getElementById('typing-text-de');
+            const typingTextEn = document.getElementById('typing-text-en');
+            
+            typingTextDe.classList.remove('typed');
+            typingTextEn.classList.remove('typed');
+            typingTextDe.textContent = '';
+            typingTextEn.textContent = '';
+            
+            // Start new animation after a brief pause
+            setTimeout(() => {
+                setupTypingEffect();
+            }, 50);
         }
         
         // Terminal effect
@@ -730,11 +774,11 @@
                 }
             });
             
-            // Initialisiere die Skill-Leisten
+            // Initialize the skill bars
             initSkillLevels();
         });
         
-        // Neue Funktion für die Skill-Level-Anzeige
+        // Function for skill level display
         function initSkillLevels() {
             const skills = document.querySelectorAll('.skill[data-skill-level]');
             
@@ -742,7 +786,7 @@
                 const level = skill.getAttribute('data-skill-level');
                 const levelBar = skill.querySelector('.skill-level');
                 
-                // Event-Listener für Hover-Effekt
+                // Event listener for hover effect
                 skill.addEventListener('mouseenter', () => {
                     levelBar.style.width = `${level}%`;
                 });
