@@ -77,6 +77,25 @@
             color: var(--accent-color);
         }
 
+        /* Hamburger menu icon */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: var(--accent-color);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
         /* Language switcher styles */
         .lang-switch {
             margin-left: 20px;
@@ -178,16 +197,16 @@
             cursor: pointer;
         }
 
-        .skill:hover {
+        .skill:hover, .skill:active {
             transform: translateY(-5px);
         }
         
-        /* Neue Styles für die Skill-Level-Leiste */
+        /* Styles for the skill level bar */
         .skill-level {
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 0; /* Wird durch JS gesetzt */
+            width: 0; /* Set by JS */
             height: 3px;
             background-color: var(--accent-color);
             transition: width 0.6s ease-in-out;
@@ -196,7 +215,7 @@
             overflow: hidden;
         }
         
-        .skill:hover .skill-level {
+        .skill:hover .skill-level, .skill:active .skill-level, .skill.touched .skill-level {
             opacity: 1;
         }
         
@@ -212,7 +231,7 @@
             text-shadow: 0 0 5px rgba(0, 255, 0, 0.7);
         }
         
-        .skill:hover .skill-info {
+        .skill:hover .skill-info, .skill:active .skill-info, .skill.touched .skill-info {
             opacity: 1;
         }
 
@@ -307,12 +326,6 @@
             opacity: 0.15;
         }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5em; }
-            .subtitle { font-size: 1.2em; }
-            .skills-container { grid-template-columns: 1fr 1fr; }
-        }
-
         .about-box {
             background-color: rgba(0,0,0,0.8);
             border-left: 4px solid var(--accent-color);
@@ -352,6 +365,134 @@
         html[lang="en"] .de {
             display: none;
         }
+
+        /* Enhanced Mobile Styles */
+        @media (max-width: 768px) {
+            h1 { 
+                font-size: 2.5em; 
+                margin-top: 70px;
+            }
+            
+            h2 {
+                font-size: 1.8em;
+            }
+            
+            .subtitle { 
+                font-size: 1.2em; 
+            }
+            
+            .about-list {
+                font-size: 1em;
+            }
+            
+            .menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                flex-direction: column;
+                background-color: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                width: 70%;
+                height: 100vh;
+                padding: 80px 30px;
+                transition: right 0.3s ease;
+                align-items: center;
+                gap: 30px;
+            }
+            
+            .menu.active {
+                right: 0;
+            }
+            
+            .menu a {
+                font-size: 1.2em;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                z-index: 101;
+            }
+            
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+            
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+            
+            section {
+                padding: 60px 5%;
+            }
+            
+            .terminal {
+                margin: 60px auto 0 auto;
+                padding: 15px;
+                max-width: 100%;
+            }
+            
+            .terminal-title {
+                font-size: 0.8em;
+                max-width: 60%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .project h3 {
+                font-size: 1.1em;
+            }
+            
+            .project {
+                padding: 15px;
+            }
+            
+            .about-box {
+                padding: 20px 15px 15px 15px;
+            }
+            
+            /* Adjust social links for mobile */
+            .social-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            /* Make touch targets larger */
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 1.1em;
+                display: block;
+                text-align: center;
+                margin: 0 auto;
+            }
+            
+            /* Better spacing for header on mobile */
+            header {
+                padding-top: 60px;
+                justify-content: flex-start;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .skill {
+                flex: 1 1 100%;
+                min-height: 60px;
+            }
+            
+            .terminal-buttons {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -359,7 +500,13 @@
 
     <nav id="navbar">
         <div class="logo"></div>
-        <div class="menu">
+        <!-- New hamburger menu -->
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="menu" id="mobileMenu">
             <a href="#about" class="de">Über mich</a>
             <a href="#about" class="en">About me</a>
             <a href="#skills" class="de">Fähigkeiten</a>
@@ -568,9 +715,29 @@
                     langSwitch.innerHTML = '<span id="langFlag">🇦🇹</span> Deutsch';
                 }
             }
+            
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+            
+            // Close mobile menu when clicking a link
+            const menuLinks = document.querySelectorAll('.menu a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                });
+            });
         });
 
-        // Matrix rain background effect
+        // Matrix rain background effect with performance optimization
         document.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById('matrixCanvas');
             const ctx = canvas.getContext('2d');
@@ -583,20 +750,29 @@
             
             resizeCanvas();
             
-            const fontSize = 14;
+            // Adjust font size for mobile
+            const isMobile = window.innerWidth < 768;
+            const fontSize = isMobile ? 10 : 14;
             const columns = Math.ceil(canvas.width / fontSize);
             const drops = Array(columns).fill(1);
             
             const matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
 
             let frameCount = 0;
+            let animationActive = true;
+            
+            // Reduce animation complexity on mobile
+            const frameSkip = isMobile ? 8 : 6;
 
             function draw() {
+                if (!animationActive) return;
+                
                 frameCount++;
-                if (frameCount % 6 !== 0) { 
+                if (frameCount % frameSkip !== 0) { 
                     requestAnimationFrame(draw);
                     return;
                 }
+                
                 // Transparent black background for trailing effect
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -605,14 +781,20 @@
                 ctx.fillStyle = '#00ff00';
                 ctx.font = fontSize + 'px monospace';
                 
+                // Reduce the number of updates on mobile
+                const updateFrequency = isMobile ? 0.98 : 0.975;
+                
                 for (let i = 0; i < drops.length; i++) {
+                    // Skip some columns on mobile for performance
+                    if (isMobile && i % 2 !== 0) continue;
+                    
                     const text = matrix[Math.floor(Math.random() * matrix.length)];
                     
                     // Draw the matrix symbol
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
                     
                     // Reset drops, random probability
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    if (drops[i] * fontSize > canvas.height && Math.random() > updateFrequency) {
                         drops[i] = 0;
                     }
                     
@@ -627,7 +809,34 @@
             draw();
             
             // Window resize event handler
-            window.addEventListener('resize', resizeCanvas);
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                // Update mobile detection on resize
+                const newIsMobile = window.innerWidth < 768;
+                if (newIsMobile !== isMobile) {
+                    // Refresh page to reset animation parameters
+                    window.location.reload();
+                }
+            });
+            
+            // Pause animation when not in viewport to save battery
+            document.addEventListener('visibilitychange', () => {
+                animationActive = !document.hidden;
+                if (animationActive) draw();
+            });
+            
+            // Throttle animation when scrolling on mobile
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                if (isMobile) {
+                    animationActive = false;
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        animationActive = true;
+                        draw();
+                    }, 200);
+                }
+            });
         });
         
         // Improved typing effect
@@ -741,7 +950,15 @@
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    
+                    // Add offset for fixed header
+                    const target = document.querySelector(this.getAttribute('href'));
+                    const headerOffset = 60;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
                         behavior: 'smooth'
                     });
                 });
@@ -778,7 +995,7 @@
             initSkillLevels();
         });
         
-        // Function for skill level display
+        // Function for skill level display with touch support
         function initSkillLevels() {
             const skills = document.querySelectorAll('.skill[data-skill-level]');
             
@@ -786,14 +1003,43 @@
                 const level = skill.getAttribute('data-skill-level');
                 const levelBar = skill.querySelector('.skill-level');
                 
-                // Event listener for hover effect
+                // Mouse events
                 skill.addEventListener('mouseenter', () => {
                     levelBar.style.width = `${level}%`;
                 });
                 
                 skill.addEventListener('mouseleave', () => {
-                    levelBar.style.width = '0';
+                    if (!skill.classList.contains('touched')) {
+                        levelBar.style.width = '0';
+                    }
                 });
+                
+                // Touch events for mobile
+                skill.addEventListener('touchstart', (e) => {
+                    e.preventDefault(); // Prevent scrolling on touch
+                    skill.classList.add('touched');
+                    levelBar.style.width = `${level}%`;
+                    
+                    // Clear other touched skills
+                    skills.forEach(otherSkill => {
+                        if (otherSkill !== skill) {
+                            otherSkill.classList.remove('touched');
+                            const otherBar = otherSkill.querySelector('.skill-level');
+                            otherBar.style.width = '0';
+                        }
+                    });
+                });
+            });
+            
+            // Clear touched state when tapping elsewhere
+            document.addEventListener('touchstart', (e) => {
+                if (!e.target.closest('.skill')) {
+                    skills.forEach(skill => {
+                        skill.classList.remove('touched');
+                        const bar = skill.querySelector('.skill-level');
+                        if (bar) bar.style.width = '0';
+                    });
+                }
             });
         }
     </script>
