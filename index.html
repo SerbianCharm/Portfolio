@@ -36,6 +36,68 @@
             position: relative;
         }
 
+        /* Profile section with image */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .profile-image-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            object-fit: cover;
+            filter: brightness(0.9) contrast(1.1);
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.3),
+                0 0 40px rgba(0, 255, 0, 0.1),
+                inset 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        .profile-image:hover {
+            filter: brightness(1.1) contrast(1.2);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 0, 0.5),
+                0 0 60px rgba(0, 255, 0, 0.2),
+                inset 0 0 30px rgba(0, 255, 0, 0.15);
+            transform: scale(1.02);
+        }
+
+        /* Matrix-style border animation */
+        .profile-image-container::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent-color), transparent, var(--accent-color));
+            z-index: -1;
+            opacity: 0.7;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         nav {
             position: fixed;
             top: 0;
@@ -368,6 +430,21 @@
 
         /* Enhanced Mobile Styles */
         @media (max-width: 768px) {
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .profile-content {
+                min-width: auto;
+            }
+
             h1 { 
                 font-size: 2.5em; 
                 margin-top: 70px;
@@ -480,6 +557,11 @@
         
         /* Extra small devices */
         @media (max-width: 480px) {
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
             h1 {
                 font-size: 2em;
             }
@@ -518,11 +600,19 @@
     </nav>
 
     <header id="about">
-        <h1 class="glitch-text" data-text="Boris Maksimovic">Boris Maksimovic</h1>
-        <p class="subtitle typing de" id="typing-text-de" data-original-text="Ethischer Hacker & Entwickler">Ethischer Hacker & Entwickler</p>
-        <p class="subtitle typing en" id="typing-text-en" data-original-text="Ethical Hacker & Developer">Ethical Hacker & Developer</p>
-        <p class="de">Ich finde Schwachstellen, bevor andere sie ausnutzen können.</p>
-        <p class="en">Finding vulnerabilities before others can exploit them.</p>
+        <div class="profile-section">
+            <div class="profile-content">
+                <h1 class="glitch-text" data-text="Boris Maksimovic">Boris Maksimovic</h1>
+                <p class="subtitle typing de" id="typing-text-de" data-original-text="Ethischer Hacker & Entwickler">Ethischer Hacker & Entwickler</p>
+                <p class="subtitle typing en" id="typing-text-en" data-original-text="Ethical Hacker & Developer">Ethical Hacker & Developer</p>
+                <p class="de">Ich finde Schwachstellen, bevor andere sie ausnutzen können.</p>
+                <p class="en">Finding vulnerabilities before others can exploit them.</p>
+            </div>
+            <div class="profile-image-container">
+                <img src="Boris.jpg" alt="Boris Maksimovic" class="profile-image">
+            </div>
+        </div>
+        
         <div class="about-box">
             <ul class="about-list de">
                 <li>Bachelor-Abschluss in Informations- und Kommunikationssysteme, Spezialisierung auf IT-Sicherheit</li>
@@ -544,6 +634,7 @@
         </div>
     </header>
 
+    <!-- Rest of the HTML remains the same -->
     <section id="skills">
        <h2 class="de">
             Fähigkeiten <span class="about-note" style="font-size: 0.5em; margin-left: 10px;"><sub><i>Maus/Touch für's Skill-Level</i></sub></span>
@@ -671,6 +762,7 @@
         </div>
     </footer>
 
+    <!-- All JavaScript remains the same -->
     <script>
         // Global variables for typing animation
         let currentTypingTimeout = null;
@@ -715,7 +807,6 @@
                     langSwitch.innerHTML = '<span id="langFlag">🇦🇹</span> Deutsch';
                 }
             }
-            
             // Mobile menu toggle
             const menuToggle = document.getElementById('menuToggle');
             const mobileMenu = document.getElementById('mobileMenu');
