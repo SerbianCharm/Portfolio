@@ -1164,6 +1164,15 @@
           --landscape-font-scale: clamp(0.8, 2.2vh, 1.1);
         }
       }
+      .subtitle.typing {
+        min-height: 1.5em; /* Prevent layout shift during typing */
+      }
+
+      /* Ensure smoother transitions between language switches */
+      .subtitle.de,
+      .subtitle.en {
+        transition: none !important; /* Disable transitions during language switch */
+      }
     </style>
   </head>
   <body>
@@ -1496,22 +1505,24 @@
       let currentTypingTimeout = null;
       let typingAnimationRunning = false;
 
-      // Language switcher
+      // Language switcher and typing effect setup
       document.addEventListener("DOMContentLoaded", () => {
         const langSwitch = document.getElementById("langSwitch");
         const htmlTag = document.documentElement;
 
         // Check for saved language preference
         const savedLang = localStorage.getItem("language") || "de";
+
+        // CRITICAL: Set language FIRST, then wait for styles to apply
         htmlTag.setAttribute("lang", savedLang);
 
         // Update button text based on current language
         updateLangButtonText();
 
-        // Set up typing effect for current language
+        // Wait longer for CSS to fully apply before starting typing
         setTimeout(() => {
           setupTypingEffect();
-        }, 100);
+        }, 250); // Increased delay
 
         langSwitch.addEventListener("click", () => {
           const currentLang = htmlTag.getAttribute("lang");
@@ -1523,8 +1534,10 @@
           // Update button text
           updateLangButtonText();
 
-          // Reset and start typing effect in new language
-          resetTypingEffect();
+          // Reset and start typing effect in new language with delay
+          setTimeout(() => {
+            resetTypingEffect();
+          }, 100);
         });
 
         function updateLangButtonText() {
@@ -1658,7 +1671,139 @@
 
         // Initial call
         handleUniversalLandscape();
+
+        // Initialize the skill bars
+        initSkillLevels();
       });
+
+      // Improved typing effect with cross-browser compatibility
+      function setupTypingEffect() {
+        // Stop any existing typing animation
+        if (currentTypingTimeout) {
+          clearTimeout(currentTypingTimeout);
+          currentTypingTimeout = null;
+        }
+
+        if (typingAnimationRunning) {
+          return;
+        }
+
+        const currentLang = document.documentElement.getAttribute("lang");
+        const typingTextDe = document.getElementById("typing-text-de");
+        const typingTextEn = document.getElementById("typing-text-en");
+
+        // Get the currently visible element based on language
+        const typingText = currentLang === "de" ? typingTextDe : typingTextEn;
+        const hiddenText = currentLang === "de" ? typingTextEn : typingTextDe;
+
+        // Get original text from data attribute
+        const originalText = typingText.getAttribute("data-original-text");
+
+        if (!originalText) {
+          return;
+        }
+
+        // CRITICAL FIX: Ensure element is visible before manipulation
+        // Force the element to be visible temporarily if it's hidden
+        const isHidden = window.getComputedStyle(typingText).display === "none";
+        if (isHidden) {
+          // Temporarily make visible for text manipulation
+          typingText.style.display = "block";
+          typingText.style.visibility = "hidden"; // Keep it invisible but rendered
+        }
+
+        // Clear content of both elements and mark as running
+        typingText.textContent = "";
+        hiddenText.textContent = ""; // Clear the hidden one too
+        typingText.classList.add("typed");
+        typingAnimationRunning = true;
+
+        // Restore proper visibility after a brief moment
+        if (isHidden) {
+          setTimeout(() => {
+            typingText.style.display = "";
+            typingText.style.visibility = "";
+          }, 50);
+        }
+
+        let i = 0;
+
+        function typeWriter() {
+          if (i < originalText.length && typingAnimationRunning) {
+            // Double-check element is still the right one and visible
+            const currentActiveLang =
+              document.documentElement.getAttribute("lang");
+            const currentActiveElement =
+              currentActiveLang === "de" ? typingTextDe : typingTextEn;
+
+            if (currentActiveElement === typingText) {
+              typingText.textContent += originalText.charAt(i);
+            }
+            i++;
+            currentTypingTimeout = setTimeout(typeWriter, 100);
+          } else {
+            typingAnimationRunning = false;
+            currentTypingTimeout = null;
+          }
+        }
+
+        // Start typing after a longer delay to ensure CSS is applied
+        currentTypingTimeout = setTimeout(typeWriter, 300);
+      }
+
+      function resetTypingEffect() {
+        // Stop any running animation
+        if (currentTypingTimeout) {
+          clearTimeout(currentTypingTimeout);
+          currentTypingTimeout = null;
+        }
+
+        typingAnimationRunning = false;
+
+        // Reset both elements - but handle them safely
+        const typingTextDe = document.getElementById("typing-text-de");
+        const typingTextEn = document.getElementById("typing-text-en");
+
+        // Clear classes
+        typingTextDe.classList.remove("typed");
+        typingTextEn.classList.remove("typed");
+
+        // Force both elements to be momentarily visible for clearing
+        const deHidden =
+          window.getComputedStyle(typingTextDe).display === "none";
+        const enHidden =
+          window.getComputedStyle(typingTextEn).display === "none";
+
+        if (deHidden) {
+          typingTextDe.style.display = "block";
+          typingTextDe.style.visibility = "hidden";
+        }
+        if (enHidden) {
+          typingTextEn.style.display = "block";
+          typingTextEn.style.visibility = "hidden";
+        }
+
+        // Clear content
+        typingTextDe.textContent = "";
+        typingTextEn.textContent = "";
+
+        // Restore proper visibility
+        setTimeout(() => {
+          if (deHidden) {
+            typingTextDe.style.display = "";
+            typingTextDe.style.visibility = "";
+          }
+          if (enHidden) {
+            typingTextEn.style.display = "";
+            typingTextEn.style.visibility = "";
+          }
+        }, 50);
+
+        // Start new animation after everything is properly reset
+        setTimeout(() => {
+          setupTypingEffect();
+        }, 100);
+      }
 
       // Matrix rain background effect with performance optimization
       document.addEventListener("DOMContentLoaded", () => {
@@ -1789,78 +1934,6 @@
         });
       });
 
-      // Improved typing effect
-      function setupTypingEffect() {
-        // Stop any existing typing animation
-        if (currentTypingTimeout) {
-          clearTimeout(currentTypingTimeout);
-          currentTypingTimeout = null;
-        }
-
-        if (typingAnimationRunning) {
-          return;
-        }
-
-        const currentLang = document.documentElement.getAttribute("lang");
-        const typingTextDe = document.getElementById("typing-text-de");
-        const typingTextEn = document.getElementById("typing-text-en");
-
-        // Get the currently visible element based on language
-        const typingText = currentLang === "de" ? typingTextDe : typingTextEn;
-
-        // Get original text from data attribute
-        const originalText = typingText.getAttribute("data-original-text");
-
-        if (!originalText) {
-          return;
-        }
-
-        // Clear content and mark as running
-        typingText.textContent = "";
-        typingText.classList.add("typed");
-        typingAnimationRunning = true;
-
-        let i = 0;
-
-        function typeWriter() {
-          if (i < originalText.length && typingAnimationRunning) {
-            typingText.textContent += originalText.charAt(i);
-            i++;
-            currentTypingTimeout = setTimeout(typeWriter, 100);
-          } else {
-            typingAnimationRunning = false;
-            currentTypingTimeout = null;
-          }
-        }
-
-        // Start typing after a short delay
-        currentTypingTimeout = setTimeout(typeWriter, 200);
-      }
-
-      function resetTypingEffect() {
-        // Stop any running animation
-        if (currentTypingTimeout) {
-          clearTimeout(currentTypingTimeout);
-          currentTypingTimeout = null;
-        }
-
-        typingAnimationRunning = false;
-
-        // Reset both elements
-        const typingTextDe = document.getElementById("typing-text-de");
-        const typingTextEn = document.getElementById("typing-text-en");
-
-        typingTextDe.classList.remove("typed");
-        typingTextEn.classList.remove("typed");
-        typingTextDe.textContent = "";
-        typingTextEn.textContent = "";
-
-        // Start new animation after a brief pause
-        setTimeout(() => {
-          setupTypingEffect();
-        }, 50);
-      }
-
       // Terminal effect
       document.addEventListener("DOMContentLoaded", () => {
         const terminalContent = document.getElementById("terminal-content");
@@ -1957,9 +2030,6 @@
             navbar.classList.remove("scrolled");
           }
         });
-
-        // Initialize the skill bars
-        initSkillLevels();
       });
 
       // Function for skill level display with touch support
