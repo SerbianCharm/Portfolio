@@ -820,42 +820,101 @@
       const canvas = document.getElementById("matrixCanvas");
       const ctx = canvas.getContext("2d");
 
+      let animationId;
+      let lastTime = 0;
+      let isScrolling = false;
+      let scrollTimeout;
+
       function resizeCanvas() {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        if (imageData.width > 0 && imageData.height > 0) {
+          ctx.putImageData(imageData, 0, 0);
+        }
       }
       resizeCanvas();
+
       const matrix =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
       const fontSize = 14;
       let columns = Math.floor(canvas.width / fontSize);
       let drops = Array(columns).fill(1);
 
-      function drawMatrix() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      function drawMatrix(currentTime) {
+        if (!lastTime) lastTime = currentTime;
+        const deltaTime = currentTime - lastTime;
 
-        ctx.fillStyle = "#00ff00";
-        ctx.font = fontSize + "px monospace";
+        if (deltaTime > 65) {
+          if (!isScrolling || window.innerWidth > 768) {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        for (let i = 0; i < drops.length; i++) {
-          const text = matrix[Math.floor(Math.random() * matrix.length)];
-          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            ctx.fillStyle = "#00ff00";
+            ctx.font = fontSize + "px monospace";
 
-          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
+            for (let i = 0; i < drops.length; i++) {
+              const text = matrix[Math.floor(Math.random() * matrix.length)];
+              ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+              if (
+                drops[i] * fontSize > canvas.height &&
+                Math.random() > 0.975
+              ) {
+                drops[i] = 0;
+              }
+              drops[i]++;
+            }
           }
-          drops[i]++;
+          lastTime = currentTime;
         }
 
-        setTimeout(drawMatrix, 65);
+        animationId = requestAnimationFrame(drawMatrix);
       }
-      drawMatrix();
 
+      animationId = requestAnimationFrame(drawMatrix);
+
+      let ticking = false;
+      function handleScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            if (window.innerWidth <= 768) {
+              isScrolling = true;
+              clearTimeout(scrollTimeout);
+              scrollTimeout = setTimeout(() => {
+                isScrolling = false;
+              }, 150);
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+
+      let resizeTimer;
       window.addEventListener("resize", () => {
-        resizeCanvas();
-        columns = Math.floor(canvas.width / fontSize);
-        drops = Array(columns).fill(1);
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          resizeCanvas();
+          columns = Math.floor(canvas.width / fontSize);
+          const newDrops = Array(columns).fill(1);
+          for (let i = 0; i < Math.min(drops.length, newDrops.length); i++) {
+            newDrops[i] = drops[i];
+          }
+          drops = newDrops;
+        }, 250);
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          cancelAnimationFrame(animationId);
+        } else {
+          animationId = requestAnimationFrame(drawMatrix);
+        }
       });
 
       const commands = [
@@ -898,13 +957,13 @@
       const glitchText = document.querySelector(".glitch-text");
       setInterval(() => {
         glitchText.style.textShadow = `
-               ${Math.random() * 5}px ${Math.random() * 5}px ${
+           ${Math.random() * 5}px ${Math.random() * 5}px ${
           Math.random() * 5
         }px rgba(0,255,0,0.7),
-               ${Math.random() * -5}px ${Math.random() * 5}px ${
+           ${Math.random() * -5}px ${Math.random() * 5}px ${
           Math.random() * 5
         }px rgba(255,0,0,0.7)
-           `;
+       `;
         setTimeout(() => (glitchText.style.textShadow = "none"), 50);
       }, 3000);
 
@@ -922,19 +981,71 @@
           }
         });
 
-        skill.addEventListener("touchstart", (e) => {
+        skill.addEventListener(
+          "touchstart",
+          (e) => {
+            e.preventDefault();
+
+            document.querySelectorAll(".skill").forEach((s) => {
+              if (s !== skill) {
+                s.classList.remove("touched");
+                const bar = s.querySelector(".skill-level");
+                if (bar) bar.style.width = "0";
+              }
+            });
+
+            if (skill.classList.contains("touched")) {
+              skill.classList.remove("touched");
+              levelBar.style.width = "0";
+            } else {
+              skill.classList.add("touched");
+              levelBar.style.width = `${level}%`;
+            }
+          },
+          { passive: false }
+        );
+
+        skill.addEventListener("click", (e) => {
+          if ("ontouchstart" in window) return;
+
           e.preventDefault();
+
           document.querySelectorAll(".skill").forEach((s) => {
-            s.classList.remove("touched");
-            s.querySelector(".skill-level").style.width = "0";
+            if (s !== skill) {
+              s.classList.remove("touched");
+              const bar = s.querySelector(".skill-level");
+              if (bar) bar.style.width = "0";
+            }
           });
-          skill.classList.add("touched");
-          levelBar.style.width = `${level}%`;
+
+          if (skill.classList.contains("touched")) {
+            skill.classList.remove("touched");
+            levelBar.style.width = "0";
+          } else {
+            skill.classList.add("touched");
+            levelBar.style.width = `${level}%`;
+          }
         });
       });
 
-      document.addEventListener("touchstart", (e) => {
-        if (!e.target.closest(".skill")) {
+      document.addEventListener(
+        "touchstart",
+        (e) => {
+          if (!e.target.closest(".skill[data-level]")) {
+            document.querySelectorAll(".skill").forEach((skill) => {
+              skill.classList.remove("touched");
+              const bar = skill.querySelector(".skill-level");
+              if (bar) bar.style.width = "0";
+            });
+          }
+        },
+        { passive: true }
+      );
+
+      document.addEventListener("click", (e) => {
+        if ("ontouchstart" in window) return;
+
+        if (!e.target.closest(".skill[data-level]")) {
           document.querySelectorAll(".skill").forEach((skill) => {
             skill.classList.remove("touched");
             const bar = skill.querySelector(".skill-level");
