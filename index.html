@@ -233,7 +233,7 @@
 
       .about-note {
         color: var(--accent-color);
-        margin-top: 5px;
+        margin-top: 25px;
       }
 
       .skills-header {
@@ -246,25 +246,6 @@
 
       .skills-header h2 {
         margin-bottom: 0;
-      }
-
-      .skill-hint {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        background: rgba(0, 255, 0, 0.05);
-        border: 1px solid rgba(0, 255, 0, 0.2);
-        border-radius: 20px;
-        padding: 8px 15px;
-        font-size: 0.85em;
-        color: var(--accent-color);
-        transition: var(--transition);
-      }
-
-      .skill-hint:hover {
-        background: rgba(0, 255, 0, 0.1);
-        border-color: var(--accent-color);
-        transform: translateY(-2px);
       }
 
       .skills-container {
@@ -296,13 +277,8 @@
         width: 0;
         height: 3px;
         background-color: var(--accent-color);
-        transition: width 0.6s ease-in-out;
+        transition: width 1.2s ease-out;
         box-shadow: 0 0 10px var(--accent-color);
-        opacity: 0;
-      }
-
-      .skill:hover .skill-level,
-      .skill.touched .skill-level {
         opacity: 1;
       }
 
@@ -312,14 +288,8 @@
         right: 10px;
         color: var(--accent-color);
         font-size: 0.8em;
-        opacity: 0;
-        transition: opacity 0.3s;
-        font-weight: bold;
-      }
-
-      .skill:hover .skill-info,
-      .skill.touched .skill-info {
         opacity: 1;
+        font-weight: bold;
       }
 
       .project {
@@ -552,6 +522,13 @@
           padding: 40px 5%;
         }
       }
+
+      .skill.auto-triggered .skill-level {
+        opacity: 1;
+      }
+      .skill.auto-triggered .skill-info {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -614,8 +591,8 @@
           <li>Certified Ethical Hacker (CEH)</li>
           <li>4 years of professional experience in the IT industry</li>
         </ul>
-        <p class="about-note de"><sub><i>Kleiner Funfact am Rande: Der Hintergrund ist eine Hommage an Matrix...</i></sub></p>
-        <p class="about-note en"><sub><i>Little fun fact on the side: The background is my way of paying tribute to Matrix...</i></sub></p>
+        <p class="about-note de"><u><i>Kostenlose Penetrationstests für kleine Unternehmen - einfach melden!</i></u></p>
+        <p class="about-note en"><u><i>Free penetration tests for small businesses - feel free to reach out!</i></u></p>
       </div>
 
       <div style="margin-top: 30px">
@@ -627,11 +604,6 @@
       <div class="skills-header">
         <h2 class="de">Fähigkeiten</h2>
         <h2 class="en">Skills</h2>
-        <div class="skill-hint">
-          <span class="hint-icon">💡</span>
-          <span class="hint-text de">Antippen für Skill-Level</span>
-          <span class="hint-text en">Touch for skill level</span>
-        </div>
       </div>
 
       <div class="skills-container">
@@ -825,8 +797,6 @@
 
       let animationId;
       let lastTime = 0;
-      let isScrolling = false;
-      let scrollTimeout;
 
       function resizeCanvas() {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -851,7 +821,6 @@
         const deltaTime = currentTime - lastTime;
 
         if (deltaTime > 65) {
-          if (!isScrolling || window.innerWidth > 768) {
             ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -869,7 +838,6 @@
                 drops[i] = 0;
               }
               drops[i]++;
-            }
           }
           lastTime = currentTime;
         }
@@ -883,13 +851,6 @@
       function handleScroll() {
         if (!ticking) {
           window.requestAnimationFrame(() => {
-            if (window.innerWidth <= 768) {
-              isScrolling = true;
-              clearTimeout(scrollTimeout);
-              scrollTimeout = setTimeout(() => {
-                isScrolling = false;
-              }, 150);
-            }
             ticking = false;
           });
           ticking = true;
@@ -970,91 +931,27 @@
         setTimeout(() => (glitchText.style.textShadow = "none"), 50);
       }, 3000);
 
-      document.querySelectorAll(".skill[data-level]").forEach((skill) => {
-        const level = skill.getAttribute("data-level");
-        const levelBar = skill.querySelector(".skill-level");
-
-        skill.addEventListener("mouseenter", () => {
-          levelBar.style.width = `${level}%`;
-        });
-
-        skill.addEventListener("mouseleave", () => {
-          if (!skill.classList.contains("touched")) {
-            levelBar.style.width = "0";
-          }
-        });
-
-        skill.addEventListener(
-          "touchstart",
-          (e) => {
-            e.preventDefault();
-
-            document.querySelectorAll(".skill").forEach((s) => {
-              if (s !== skill) {
-                s.classList.remove("touched");
-                const bar = s.querySelector(".skill-level");
-                if (bar) bar.style.width = "0";
-              }
-            });
-
-            if (skill.classList.contains("touched")) {
-              skill.classList.remove("touched");
-              levelBar.style.width = "0";
-            } else {
-              skill.classList.add("touched");
+      const skillObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !entry.target.classList.contains('auto-triggered')) {
+            const skill = entry.target;
+            const level = skill.getAttribute('data-level');
+            const levelBar = skill.querySelector('.skill-level');
+      
+            if (level && levelBar) {
+              const delay = Array.from(document.querySelectorAll('.skill[data-level]')).indexOf(skill) * 200;
+        
+            setTimeout(() => {
               levelBar.style.width = `${level}%`;
-            }
-          },
-          { passive: false }
-        );
-
-        skill.addEventListener("click", (e) => {
-          if ("ontouchstart" in window) return;
-
-          e.preventDefault();
-
-          document.querySelectorAll(".skill").forEach((s) => {
-            if (s !== skill) {
-              s.classList.remove("touched");
-              const bar = s.querySelector(".skill-level");
-              if (bar) bar.style.width = "0";
-            }
-          });
-
-          if (skill.classList.contains("touched")) {
-            skill.classList.remove("touched");
-            levelBar.style.width = "0";
-          } else {
-            skill.classList.add("touched");
-            levelBar.style.width = `${level}%`;
+              skill.classList.add('auto-triggered');
+            }, delay);
           }
-        });
-      });
-
-      document.addEventListener(
-        "touchstart",
-        (e) => {
-          if (!e.target.closest(".skill[data-level]")) {
-            document.querySelectorAll(".skill").forEach((skill) => {
-              skill.classList.remove("touched");
-              const bar = skill.querySelector(".skill-level");
-              if (bar) bar.style.width = "0";
-            });
-          }
-        },
-        { passive: true }
-      );
-
-      document.addEventListener("click", (e) => {
-        if ("ontouchstart" in window) return;
-
-        if (!e.target.closest(".skill[data-level]")) {
-          document.querySelectorAll(".skill").forEach((skill) => {
-            skill.classList.remove("touched");
-            const bar = skill.querySelector(".skill-level");
-            if (bar) bar.style.width = "0";
-          });
         }
+      });
+      }, { threshold: 0.5, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.skill[data-level]').forEach(skill => {
+        skillObserver.observe(skill);
       });
     </script>
   </body>
