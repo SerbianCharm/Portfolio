@@ -22,9 +22,16 @@ const STAR_COUNT = 150;
 const LAYERS = 3;
 
 function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-    initStars();
+    const newWidth = window.innerWidth;
+    const newHeight = window.innerHeight;
+
+    if (width !== newWidth) {
+        width = canvas.width = newWidth;
+        height = canvas.height = newHeight;
+        initStars();
+    } else {
+        height = canvas.height = newHeight;
+    }
 }
 
 class Star {
