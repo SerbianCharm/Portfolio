@@ -29,8 +29,6 @@ function resize() {
         width = canvas.width = newWidth;
         height = canvas.height = newHeight;
         initStars();
-    } else {
-        height = canvas.height = newHeight;
     }
 }
 
