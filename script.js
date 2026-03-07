@@ -96,3 +96,12 @@ window.addEventListener('resize', () => {
 });
 resize();
 animate();
+
+const profilePic = document.getElementById('profile-pic');
+const eastereggGlasses = document.getElementById('easteregg-glasses');
+
+if (profilePic && eastereggGlasses) {
+    profilePic.addEventListener('click', () => {
+        eastereggGlasses.classList.toggle('show');
+    });
+}

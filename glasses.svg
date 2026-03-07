@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 11" shape-rendering="crispEdges">
+  <path fill="#000" d="
+    M0,1 h34 v2 h-34 z 
+    M1,3 h14 v1 h-14 z     M19,3 h14 v1 h-14 z
+    M1,4 h14 v1 h-14 z     M19,4 h14 v1 h-14 z
+    M2,5 h12 v1 h-12 z     M20,5 h12 v1 h-12 z
+    M2,6 h12 v1 h-12 z     M20,6 h12 v1 h-12 z
+    M3,7 h10 v1 h-10 z     M21,7 h10 v1 h-10 z
+    M4,8 h8 v1 h-8 z       M22,8 h8 v1 h-8 z
+    M5,9 h6 v1 h-6 z       M23,9 h6 v1 h-6 z
+  "/>
+  <path fill="#fff" d="
+    M2,3 h4 v1 h-4 z     M20,3 h4 v1 h-4 z
+    M3,4 h3 v1 h-3 z     M21,4 h3 v1 h-3 z
+    M4,5 h2 v1 h-2 z     M22,5 h2 v1 h-2 z
+  "/>
+</svg>
