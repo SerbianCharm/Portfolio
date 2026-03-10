@@ -125,6 +125,13 @@ nav {
     margin-top: 85px;
 }
 
+.profile-img-container {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .profile-img {
     width: 320px;
     height: 320px;

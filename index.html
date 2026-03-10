@@ -48,7 +48,7 @@
           </div>
           <div class="fact-item">
             <span class="fact-label de">Alter</span><span class="fact-label en">Age</span>
-            <span class="fact-value">28</span>
+            <span class="fact-value" id="age-value"></span>
           </div>
           <div class="fact-item">
             <span class="fact-label de">Arbeitgeber</span><span class="fact-label en">Employer</span>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="contact-wrapper">
-          <a href="mailto:maksimovic.dev@gmail.com" class="lang-btn contact-btn">
+          <a href="mailto:boris@maksimovic.at" class="lang-btn contact-btn">
             <span class="de">Schreib mir!</span>
             <span class="en">Contact me!</span>
           </a>
@@ -75,8 +75,10 @@
       </div>
 
       <div class="hero-image-wrapper">
-        <img src="Boris.webp" alt="Boris Maksimovic" id="profile-pic" class="profile-img" width="320" height="320">
-        <img src="glasses.svg" alt="Easteregg Glasses" id="easteregg-glasses" class="easteregg-glasses">
+        <div class="profile-img-container">
+          <img src="Boris.webp" alt="Boris Maksimovic" id="profile-pic" class="profile-img" width="320" height="320">
+          <img src="glasses.svg" alt="Easteregg Glasses" id="easteregg-glasses" class="easteregg-glasses">
+        </div>
         <div class="easteregg-text">
           <span class="de">Easteregg? Klick auf mein Bild! &uarr;</span>
           <span class="en">Easteregg? Click on my picture! &uarr;</span>
@@ -221,7 +223,7 @@
     </section>
 
     <footer>
-      <span>&copy; 2026 Boris Maksimovic</span>
+      <span>&copy; <span id="current-year"></span> Boris Maksimovic</span>
       <div class="socials">
         <a href="https://github.com/SerbianCharm" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="https://app.hackthebox.com/profile/2328607" target="_blank" rel="noopener noreferrer">HackTheBox</a>

@@ -105,3 +105,20 @@ if (profilePic && eastereggGlasses) {
         eastereggGlasses.classList.toggle('show');
     });
 }
+
+const ageElement = document.getElementById('age-value');
+if (ageElement) {
+    const birthDate = new Date('1998-03-11');
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    ageElement.textContent = age;
+}
+
+const yearElement = document.getElementById('current-year');
+if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
+}
