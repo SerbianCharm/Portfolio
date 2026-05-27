@@ -19,6 +19,10 @@
     padding: 0;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--bg);
     color: var(--text-primary);
@@ -28,6 +32,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     overflow-x: hidden;
+    max-width: 100vw;
 }
 
 #star-canvas {
@@ -340,7 +345,8 @@ footer {
     color: var(--text-secondary);
     pointer-events: none;
     text-align: center;
-    width: 200%;
+    width: max-content;
+    max-width: 90vw;
     animation: bounceText 2s infinite;
 }
 
